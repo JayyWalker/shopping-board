@@ -1,7 +1,8 @@
 import { Suspense } from "react"
-import { Image, Link, BlitzPage, useMutation, Routes } from "blitz"
+import { BlitzPage, useQuery } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import { BiSearch } from "react-icons/bi"
+import getTags from "app/queries/getTags"
 
 const SearchRow = () => {
   return (
@@ -26,10 +27,38 @@ const SearchRow = () => {
   )
 }
 
+const Tag = ({ name }) => {
+  return (
+    <span className="bg-gray-900 mr-3 px-4 py-2 rounded-3xl text-gray-100 hover:bg-gray-500 hover:text-white">
+      {name}
+    </span>
+  )
+}
+
+const TagsStrip = ({ tags }) => {
+  return (
+    <section className="bg-white pb-6 pt-3 px-6">
+      {tags.map((tag) => (
+        <Tag key={tag.id} name={tag.name} />
+      ))}
+    </section>
+  )
+}
+
+const TagsWrapper = () => {
+  // @ts-ignore
+  const [tags] = useQuery(getTags, {})
+
+  return <TagsStrip tags={tags} />
+}
+
 const Home: BlitzPage = () => {
   return (
     <>
       <SearchRow />
+      <Suspense fallback={<div>Loading tags...</div>}>
+        <TagsWrapper />
+      </Suspense>
     </>
   )
 }
