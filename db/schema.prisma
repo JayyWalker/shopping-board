@@ -63,12 +63,13 @@ model Token {
 }
 
 model Item {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   url       String
   price     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  tags      TagOnItem[]
 
   @@map(name: "items")
 }
@@ -83,9 +84,26 @@ model ItemImage {
   @@map(name: "item_images")
 }
 
-//model Tag {
-//  id Int @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-//}
+model Tag {
+  id        String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name      String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     TagOnItem[]
+
+  @@map(name: "tags")
+}
+
+model TagOnItem {
+  item       Item     @relation(fields: [itemId], references: [id])
+  itemId     String   @db.Uuid
+  tag        Tag      @relation(fields: [tagId], references: [id])
+  tagId      String   @db.Uuid
+  assignedAt DateTime @default(now())
+
+  @@id([itemId, tagId])
+  @@map(name: "tags_on_items")
+}
 
 // NOTE: It's highly recommended to use an enum for the token type
 //       but enums only work in Postgres.
