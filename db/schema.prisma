@@ -62,7 +62,7 @@ model Token {
   @@map(name: "tokens")
 }
 
-model Items {
+model Item {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   url       String
@@ -73,7 +73,7 @@ model Items {
   @@map(name: "items")
 }
 
-model ItemImages {
+model ItemImage {
   id        Int      @id @default(autoincrement())
   name      String
   path      String
