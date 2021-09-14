@@ -74,7 +74,7 @@ model Item {
 }
 
 model ItemImage {
-  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name      String
   path      String
   createdAt DateTime @default(now())
@@ -82,6 +82,10 @@ model ItemImage {
 
   @@map(name: "item_images")
 }
+
+//model Tag {
+//  id Int @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//}
 
 // NOTE: It's highly recommended to use an enum for the token type
 //       but enums only work in Postgres.
